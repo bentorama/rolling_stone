@@ -41,7 +41,6 @@ The Sun Sessions,Elvis Presley,1976,11,,78,44.5
 Legend,Bob Marley & The Wailers,1984,46,46,48,46.67
 The Dark Side Of The Moon,Pink Floyd,1973,43,43,55,47.0
 The Band,The Band,1969,45,45,57,49.0
-Purple Rain,Prince,1984,72,76,8,52.0
 A Love Supreme,John Coltrane,1965,47,47,66,53.33
 "Never Mind The Bollocks, Here's The Sex Pistols",Sex Pistols,1977,41,41,80,54.0
 Electric Ladyland,The Jimi Hendrix Experience,1968,54,55,53,54.0
@@ -62,7 +61,6 @@ Star Time,James Brown,1991,79,75,54,69.33
 Super Fly,Curtis Mayfield,1972,69,72,76,72.33
 Led Zeppelin,Led Zeppelin,1969,29,79,123,77.0
 Sticky Fingers,The Rolling Stones,1971,63,64,104,77.0
-Sign O' The Times,Prince,1987,93,93,45,77.0
 Harvest,Neil Young,1972,78,82,72,77.33
 Back In Black,AC/DC,1980,73,77,84,78.0
 After The Gold Rush,Neil Young,1970,71,74,90,78.33
@@ -90,7 +88,6 @@ Physical Graffiti,Led Zeppelin,1975,70,73,144,95.67
 Ready To Die,The Notorious B.I.G,1994,133,134,22,96.33
 Goodbye Yellow Brick Road,Elton John,1973,91,91,112,98.0
 Remain In Light,Talking Heads,1980,126,129,39,98.0
-Red,Taylor Swift,2012,,,99,99.0
 Beggars Banquet,The Rolling Stones,1968,57,58,185,100.0
 The Wall,Pink Floyd,1979,87,87,129,101.0
 Hunky Dory,David Bowie,1971,107,108,88,101.0
@@ -118,6 +115,7 @@ Aja,Steely Dan,1977,145,145,63,117.67
 Stand!,Sly & The Family Stone,1969,118,121,119,119.33
 Straight Outta Compton,N.W.A,1988,144,144,70,119.33
 If You Can Believe Your Eyes And Ears,The Mamas & The Papas,1966,127,112,,119.5
+Purple Rain,Prince,1984,72,163,130,121.67
 Marquee Moon,Television,1977,128,130,107,121.67
 OK Computer,Radiohead,1997,162,162,42,122.0
 Moby Grape,Moby Grape,1967,121,124,,122.5
@@ -125,6 +123,7 @@ Younger Than Yesterday,The Byrds,1967,124,127,,125.5
 Imagine,John Lennon,1971,76,80,223,126.33
 Raw Power,The Stooges,1973,125,128,,126.5
 Tommy,The Who,1969,96,96,190,127.33
+Sign O' The Times,Prince,1987,93,163,130,128.67
 Sweet Baby James,James Taylor,1970,103,104,182,129.67
 Catch A Fire,The Wailers,1973,123,126,140,129.67
 Darkness On The Edge Of Town,Bruce Springsteen,1978,151,150,91,130.67
@@ -151,7 +150,6 @@ Channel Orange,Frank Ocean,2012,,,148,148.0
 Santana,Santana,1969,150,149,,149.5
 The Freewheelin' Bob Dylan,Bob Dylan,1963,97,97,255,149.67
 Raising Hell,Run-D.M.C,1986,120,123,209,150.67
-1999,Prince,1982,163,163,130,152.0
 Layla And Other Assorted Love Songs,Derek And The Dominos,1970,115,117,226,152.67
 Loaded,The Velvet Underground,1970,109,110,242,153.67
 Pretenders,Pretenders,1980,155,155,152,154.0
@@ -265,6 +263,7 @@ The Marshall Mathers LP,Eminem,2000,302,244,145,230.33
 Howlin' Wolf,Howlin' Wolf,1962,223,238,,230.5
 Dig Me Out,Sleater-Kinney,1997,,272,189,230.5
 The Kink Kronikles,The Kinks,1972,231,232,,231.5
+1999,Prince,1982,163,206,326,231.67
 The Ultimate Collection,Patsy Cline,2000,234,235,229,232.67
 Station To Station,David Bowie,1976,323,324,52,233.0
 Little Earthquakes,Tori Amos,1992,,,233,233.0
@@ -297,7 +296,6 @@ Abraxas,Santana,1970,205,207,334,248.67
 Trans-Europe Express,Kraftwerk,1977,253,256,238,249.0
 Let's Get It On,Marvin Gaye,1973,165,165,422,250.67
 Mr. Tambourine Man,The Byrds,1965,232,233,287,250.67
-Honky Château,Elton John,1972,,,251,251.0
 Grace,Jeff Buckley,1994,303,304,147,251.33
 The River,Bruce Springsteen,1980,250,253,,251.5
 The Black Album,Jay-Z,2003,,349,155,252.0
@@ -357,7 +355,6 @@ Illmatic,Nas,1994,400,402,44,282.0
 Five Leaves Left,Nick Drake,1969,283,,,283.0
 Bad Girls,Donna Summer,1975,,,283,283.0
 Violator,Depeche Mode,1990,342,342,167,283.67
-3rd/Sister Lovers,Big Star,1978,,,285,285.0
 "Crooked Rain, Crooked Rain",Pavement,1994,210,212,434,285.33
 White Light/White Heat,The Velvet Underground,1968,292,293,272,285.67
 Coat Of Many Colors,Dolly Parton,1971,299,301,257,285.67
@@ -422,6 +419,7 @@ Tonight's The Night,Neil Young,1975,331,330,302,321.0
 Norman Fucking Rockwell!,Lana Del Rey,2019,,,321,321.0
 Rid Of Me,PJ Harvey,1993,405,406,153,321.33
 Avalon,Roxy Music,1982,307,,336,321.5
+Honky Chateau,Elton John,1972,357,359,251,322.33
 Ghost In The Machine,The Police,1981,322,323,,322.5
 Singles Going Steady,Buzzcocks,1979,358,360,250,322.67
 Dummy,Portishead,1994,419,419,131,323.0
@@ -476,7 +474,6 @@ Siamese Dream,Smashing Pumpkins,1993,360,362,341,354.33
 12 Songs,Randy Newman,1970,354,356,,355.0
 Between The Buttons,The Rolling Stones,1967,355,357,,356.0
 Sketches Of Spain,Miles Davis,1960,356,358,,357.0
-Honky Chateau,Elton John,1972,357,359,,358.0
 Goo,Sonic Youth,1990,,,358,358.0
 "Whatever People Say I Am, That's What I'm Not",Arctic Monkeys,2006,,371,346,358.5
 Yankee Hotel Foxtrot,Wilco,2001,,493,225,359.0
@@ -521,7 +518,6 @@ For Your Pleasure,Roxy Music,1973,394,396,351,380.33
 Q: Are We Not Men? A: We Are Devo!,Devo,1978,447,442,252,380.33
 Down Every Road,Merle Haggard,1996,,477,284,380.5
 The Smile Sessions,The Beach Boys,2011,,381,,381.0
-(Pronounced 'Lĕh-'nérd 'Skin-'nérd),Lynyrd Skynyrd,1973,,,381,381.0
 Currents,Tame Impala,2015,,,382,382.0
 A Quick One (Happy Jack),The Who,1966,383,384,,383.5
 Pyromania,Def Leppard,1983,384,,,384.0
@@ -540,10 +536,12 @@ The Pretender,Jackson Browne,1976,391,391,,391.0
 Kaleidoscope,Kelis,1999,,,391,391.0
 Here Come The Warm Jets,Brian Eno,1973,436,432,308,392.0
 Kala,M.I.A,2007,,393,,393.0
-1989,Taylor Swift,2014,,,393,393.0
+Red,Taylor Swift,2012,,,393,393.0
 Good Old Boys,Randy Newman,1974,393,394,,393.5
 Diana,Diana Ross,1980,,,394,394.0
+(Pronounced Leh-Nerd Skin-Nerd),Lynyrd Skynyrd,1973,401,403,381,395.0
 Black Messiah,D'Angelo and the Vanguard,2014,,,395,395.0
+Third/Sister Lovers,Big Star,1978,456,449,285,396.67
 Eliminator,ZZ Top,1983,396,398,,397.0
 "When We All Fall Asleep, Where Do We Go?",Billie Eilish,2019,,,397,397.0
 Mezzanine,Massive Attack,1998,412,,383,397.5
@@ -552,13 +550,11 @@ The Raincoats,The Raincoats,1979,,,398,398.0
 Smile,Brian Wilson,2004,,,399,399.0
 Another Green World,Brian Eno,1975,433,429,338,400.0
 Blondie,Blondie,1977,,,401,401.0
-(Pronounced Leh-Nerd Skin-Nerd),Lynyrd Skynyrd,1973,401,403,,402.0
 Expensive Shit,Fela Kuti & Africa 70,1975,,,402,402.0
 Dr. John's Gumbo,Dr. John,1972,402,404,,403.0
 Supreme Clientele,Ghostface Killah,2000,,,403,403.0
 Tha Carter III,Lil Wayne,2008,,437,370,403.5
 Rapture,Anita Baker,1986,,,404,404.0
-I Do Not Want What I Haven't Got,Sinead O'Connor,1990,406,408,,407.0
 Strange Days,The Doors,1967,407,409,,408.0
 Ace of Spades,Motörhead,1980,,,408,408.0
 The Stone Roses,The Stone Roses,1989,,498,319,408.5
@@ -575,7 +571,6 @@ Looka Py Py,The Meters,1969,,,415,415.0
 Entertainment!,Gang Of Four,1979,490,483,273,415.33
 Mule Variations,Tom Waits,1999,416,416,,416.0
 Things Fall Apart,The Roots,1999,,,416,416.0
-Boy,U2,1980,417,417,,417.0
 Band On The Run,Wings,1973,418,418,,418.0
 Chief,Eric Church,2011,,,419,419.0
 With The Beatles,The Beatles,1963,420,,,420.0
@@ -586,11 +581,13 @@ Arular,M.I.A.,2005,,,421,421.0
 "The Best Of The Girl Groups, Volumes 1 And 2",Various Artists,1990,422,421,,421.5
 Greatest Hits,The Mamas & The Papas,1998,423,,,423.0
 I Can Hear the Heart Beating As One,Yo La Tengo,1997,,,423,423.0
+I Do Not Want What I Haven't Got,Sinead O'Connor,1990,406,408,457,423.67
 The Rising,Bruce Springsteen,2002,,424,,424.0
 Changesone,David Bowie,1976,425,,,425.0
 The Battle Of Los Angeles,Rage Against The Machine,1999,426,,,426.0
 Lucinda Williams,Lucinda Williams,1988,,,426,426.0
 Grievous Angel,Gram Parsons,1974,429,425,,427.0
+Boy,U2,1980,417,438,,427.5
 At Budokan,Cheap Trick,1978,430,426,,428.0
 Reach Out,The Four Tops,1967,,,429,429.0
 Sleepless,Peter Wolf,2002,432,427,,429.5
@@ -629,7 +626,6 @@ Ram,Paul & Linda McCartney,1971,,,450,450.0
 Getz/Gilberto,Stan Getz And Joao Gilberto Featuring Antonio Carlos Jobim,1964,454,447,,450.5
 First Take,Roberta Flack,1969,,,451,451.0
 Music,Madonna,2000,452,,,452.0
-Third/Sister Lovers,Big Star,1978,456,449,,452.5
 Ritual De Lo Habitual,Jane's Addiction,1990,453,,,453.0
 Pretty Hate Machine,Nine Inch Nails,1989,,,453,453.0
 For Everyman,Jackson Browne,1973,457,450,,453.5
@@ -637,7 +633,6 @@ Ege Bamyasi,Can,1972,,,454,454.0
 Strictly Business,EPMD,1988,459,453,,456.0
 Love It To Death,Alice Cooper,1971,460,454,,457.0
 Z,My Morning Jacket,2005,,457,,457.0
-I Do Not Want What I Haven't Got,Sinéad O'Connor,1990,,,457,457.0
 Southeastern,Jason Isbell,2013,,,458,458.0
 Man on the Moon: The End of the Day,Kid Cudi,2009,,,459,459.0
 Melodrama,Lorde,2017,,,460,460.0
