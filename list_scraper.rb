@@ -48,10 +48,10 @@ def parse_genius2012
     # if the album exists update the 2012 rank
     # if the album doesn't exist create a new instance of Album and push to the array
     @albums_array.each do |album|
-      album_artist_formatted = ActiveSupport::Inflector.transliterate(album.artist.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
-      artist_formatted = ActiveSupport::Inflector.transliterate(artist.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
-      album_title_formatted = ActiveSupport::Inflector.transliterate(album.title.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
-      title_formatted = ActiveSupport::Inflector.transliterate(title.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
+      album_artist_formatted = album.artist.downcase.gsub(/&/, 'and').gsub(/\W/, '')
+      artist_formatted = artist.downcase.gsub(/&/, 'and').gsub(/\W+/, '')
+      album_title_formatted = album.title.downcase.gsub(/&/, 'and').gsub(/\W+/, '')
+      title_formatted = title.downcase.gsub(/&/, 'and').gsub(/\W+/, '')
       title_match = album_title_formatted.include?(title_formatted) || title_formatted.include?(album_title_formatted)
       album_match = album_artist_formatted.include?(artist_formatted) || artist_formatted.include?(album_artist_formatted)
       if  title_match && album_match
@@ -75,10 +75,10 @@ def parse_genius2020
     year = line.match(/\|(.+)\|(.+)\|\s(\d{4})/)[3]
     contained = false
     @albums_array.each do |album|
-      album_artist_formatted = ActiveSupport::Inflector.transliterate(album.artist.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
-      artist_formatted = ActiveSupport::Inflector.transliterate(artist.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
-      album_title_formatted = ActiveSupport::Inflector.transliterate(album.title.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
-      title_formatted = ActiveSupport::Inflector.transliterate(title.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
+      album_artist_formatted = album.artist.downcase.gsub(/&/, 'and').gsub(/\W+/, '')
+      artist_formatted = artist.downcase.gsub(/&/, 'and').gsub(/\W+/, '')
+      album_title_formatted = album.title.downcase.gsub(/&/, 'and').gsub(/\W+/, '')
+      title_formatted = title.downcase.gsub(/&/, 'and').gsub(/\W+/, '')
       title_match = album_title_formatted.include?(title_formatted) || title_formatted.include?(album_title_formatted)
       album_match = album_artist_formatted.include?(artist_formatted) || artist_formatted.include?(album_artist_formatted)
       if title_match && album_match
