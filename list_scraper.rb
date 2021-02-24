@@ -19,10 +19,8 @@ def analyse_lists
 end
 
 def parse_genius2003
-  url = '2003.html'
-  doc = Nokogiri::HTML(open(url), nil, 'utf-8')
+  doc = Nokogiri::HTML(open('2003.html'), nil, 'utf-8')
   list_string = doc.search('.lyrics').text.strip
-  # puts doc.search('.lyrics').text.strip.gsub!(/\n\n/, "\n")
   rank = 1
   list_string.each_line do |line|
     title = line.match(/\s(.+)\s\((\d{4})\)\sby\s(.+)/)[1]
@@ -34,8 +32,7 @@ def parse_genius2003
 end
 
 def parse_genius2012
-  url = '2012.html'
-  doc = Nokogiri::HTML(open(url), nil, 'utf-8')
+  doc = Nokogiri::HTML(open('2012.html'), nil, 'utf-8')
   # list_string = doc.search('.lyrics').text.strip
   list_string = doc.search('.lyrics').text.strip.gsub!(/\n\n/, "\n")
   rank = 1
@@ -48,10 +45,10 @@ def parse_genius2012
     # if the album exists update the 2012 rank
     # if the album doesn't exist create a new instance of Album and push to the array
     @albums_array.each do |album|
-      album_artist_formatted = album.artist.downcase.gsub(/&/, 'and').gsub(/\W/, '')
-      artist_formatted = artist.downcase.gsub(/&/, 'and').gsub(/\W+/, '')
-      album_title_formatted = album.title.downcase.gsub(/&/, 'and').gsub(/\W+/, '')
-      title_formatted = title.downcase.gsub(/&/, 'and').gsub(/\W+/, '')
+      album_artist_formatted = ActiveSupport::Inflector.transliterate(album.artist.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
+      artist_formatted = ActiveSupport::Inflector.transliterate(artist.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
+      album_title_formatted = ActiveSupport::Inflector.transliterate(album.title.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
+      title_formatted = ActiveSupport::Inflector.transliterate(title.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
       title_match = album_title_formatted.include?(title_formatted) || title_formatted.include?(album_title_formatted)
       album_match = album_artist_formatted.include?(artist_formatted) || artist_formatted.include?(album_artist_formatted)
       if  title_match && album_match
@@ -75,10 +72,10 @@ def parse_genius2020
     year = line.match(/\|(.+)\|(.+)\|\s(\d{4})/)[3]
     contained = false
     @albums_array.each do |album|
-      album_artist_formatted = album.artist.downcase.gsub(/&/, 'and').gsub(/\W+/, '')
-      artist_formatted = artist.downcase.gsub(/&/, 'and').gsub(/\W+/, '')
-      album_title_formatted = album.title.downcase.gsub(/&/, 'and').gsub(/\W+/, '')
-      title_formatted = title.downcase.gsub(/&/, 'and').gsub(/\W+/, '')
+      album_artist_formatted = ActiveSupport::Inflector.transliterate(album.artist.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
+      artist_formatted = ActiveSupport::Inflector.transliterate(artist.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
+      album_title_formatted = ActiveSupport::Inflector.transliterate(album.title.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
+      title_formatted = ActiveSupport::Inflector.transliterate(title.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
       title_match = album_title_formatted.include?(title_formatted) || title_formatted.include?(album_title_formatted)
       album_match = album_artist_formatted.include?(artist_formatted) || artist_formatted.include?(album_artist_formatted)
       if title_match && album_match
