@@ -30,7 +30,7 @@ def parse_genius2003
   list_string = doc.search('.lyrics').text.strip
   rank = 1
   list_string.each_line do |line|
-    title = line.match(/\s(.+)\s\((\d{4})\)\sby\s(.+)/)[1]
+    title = line.match(/\s(.+)\s\((\d{4})\)\sby\s(.+)/)[1].gsub(/"/, '')
     artist = line.match(/\s(.+)\s\((\d{4})\)\sby\s(.+)/)[3]
     year = line.match(/\s(.+)\s\((\d{4})\)\sby\s(.+)/)[2]
     @albums_array << Album.new(title: title, artist: artist, year: year, ranking2003: rank)
@@ -41,8 +41,8 @@ end
 def format_albums_array
   @formatted_albums_array = []
   @albums_array.each do |album|
-    album_artist_formatted = ActiveSupport::Inflector.transliterate(album.artist.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
-    album_title_formatted = ActiveSupport::Inflector.transliterate(album.title.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
+    album_artist_formatted = ActiveSupport::Inflector.transliterate(album.artist.downcase.gsub(/&/, 'and').gsub(/The/, '').gsub(/[^\p{Letter}]+/, ''))
+    album_title_formatted = ActiveSupport::Inflector.transliterate(album.title.downcase.gsub(/&/, 'and').gsub(/The/, '').gsub(/[^\p{Letter}]+/, ''))
     @formatted_albums_array << [album_artist_formatted, album_title_formatted]
   end
   @formatted_albums_array
@@ -58,8 +58,8 @@ def parse_genius2012
     title = match[1]
     artist = match[3]
     year = match[2]
-    artist_formatted = ActiveSupport::Inflector.transliterate(artist.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
-    title_formatted = ActiveSupport::Inflector.transliterate(title.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
+    artist_formatted = ActiveSupport::Inflector.transliterate(artist.downcase.gsub(/&/, 'and').gsub(/The/, '').gsub(/[^\p{Letter}]+/, ''))
+    title_formatted = ActiveSupport::Inflector.transliterate(title.downcase.gsub(/&/, 'and').gsub(/The/, '').gsub(/[^\p{Letter}]+/, ''))
     contained = false
     # iterate over @albums_array and check if title and artist already exist
     # if the album exists update the 2012 rank
@@ -87,8 +87,8 @@ def parse_genius2020
     artist = match[1].strip
     title = match[2].strip
     year = match[3]
-    artist_formatted = ActiveSupport::Inflector.transliterate(artist.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
-    title_formatted = ActiveSupport::Inflector.transliterate(title.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
+    artist_formatted = ActiveSupport::Inflector.transliterate(artist.downcase.gsub(/&/, 'and').gsub(/The/, '').gsub(/[^\p{Letter}]+/, ''))
+    title_formatted = ActiveSupport::Inflector.transliterate(title.downcase.gsub(/&/, 'and').gsub(/The/, '').gsub(/[^\p{Letter}]+/, ''))
     contained = false
     @formatted_albums_array.each_with_index do |album, index|
       title_match = album[1].include?(title_formatted) || title_formatted.include?(album[1])
