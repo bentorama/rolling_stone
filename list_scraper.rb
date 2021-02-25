@@ -87,16 +87,14 @@ def parse_genius2020
     artist = match[1].strip
     title = match[2].strip
     year = match[3]
+    artist_formatted = ActiveSupport::Inflector.transliterate(artist.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
+    title_formatted = ActiveSupport::Inflector.transliterate(title.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
     contained = false
-    @albums_array.each do |album|
-      album_artist_formatted = ActiveSupport::Inflector.transliterate(album.artist.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
-      artist_formatted = ActiveSupport::Inflector.transliterate(artist.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
-      album_title_formatted = ActiveSupport::Inflector.transliterate(album.title.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
-      title_formatted = ActiveSupport::Inflector.transliterate(title.downcase.gsub(/&/, 'and').gsub(/[^\p{Letter}]+/, ''))
-      title_match = album_title_formatted.include?(title_formatted) || title_formatted.include?(album_title_formatted)
-      album_match = album_artist_formatted.include?(artist_formatted) || artist_formatted.include?(album_artist_formatted)
+    @formatted_albums_array.each_with_index do |album, index|
+      title_match = album[1].include?(title_formatted) || title_formatted.include?(album[1])
+      album_match = album[0].include?(artist_formatted) || artist_formatted.include?(album[0])
       if title_match && album_match
-        album.ranking2020 = rank
+        @albums_array[index].ranking2020 = rank
         contained = true
       end
     end
