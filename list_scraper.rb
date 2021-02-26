@@ -22,7 +22,8 @@ def analyse_lists
   p @elvis_albums
   calculate_average
   sort_albums
-  save_to_csv
+  csv_file_path = './albums_list.csv'
+  save_to_csv(csv_file_path, @albums_array)
   # p @albums_array
   p @albums_array.size
 end
@@ -152,16 +153,72 @@ def sort_albums
   @albums_array.sort_by!(&:ranking_avg)
 end
 
-def save_to_csv
-  csv_file_path = "./albums_list.csv"
+def save_to_csv(csv_file_path, array_to_save)
   CSV.open(csv_file_path, 'wb', col_sep: ',') do |csv|
-    csv << ["Title", "Artist", "Year", "Ranking 2003", "Ranking 2012", "Ranking 2020", "Average Ranking"]
-    @albums_array.each do |album|
+    csv << ["Title", "Artist", "Year", "Ranking2003", "Ranking2012", "Ranking2020", "Ranking_Avg"]
+    array_to_save.each do |album|
       csv << [album.title, album.artist, album.year, album.ranking2003, album.ranking2012, album.ranking2020, album.ranking_avg]
     end
   end
 end
-analyse_lists
+
+def load_csv
+  @albums_array = []
+  csv_options = {headers: :first_row, header_converters: :symbol}
+  CSV.foreach('albums_list.csv', csv_options) do |row|
+    row[:title] = row[:title]
+    row[:artist] = row[:artist]
+    row[:year] = row[:year].to_i
+    row[:ranking2003] = row[:ranking2003].nil? ? nil : row[:ranking2003].to_i
+    row[:ranking2012] = row[:ranking2012].nil? ? nil : row[:ranking2012].to_i
+    row[:ranking2020] = row[:ranking2020].nil? ? nil : row[:ranking2020].to_i
+    row[:ranking_avg] = row[:ranking_avg].to_i
+    @albums_array << Album.new(row)
+  end
+end
+
+def albums_cut2012
+  @array_cut2012 = []
+  @albums_array.each do |album|
+    @array_cut2012 << album if !album.ranking2003.nil? && album.ranking2012.nil?
+  end
+end
+
+def albums_added2012
+  @array_add2012 = []
+  @albums_array.each do |album|
+    @array_add2012 << album if album.ranking2003.nil? && !album.ranking2012.nil?
+  end
+end
+
+def albums_cut2020
+  @array_cut2020 = []
+  @albums_array.each do |album|
+    @array_cut2020 << album if !album.ranking2012.nil? && album.ranking2020.nil?
+  end
+end
+
+def albums_added2020
+  @array_added2020 = []
+  @albums_array.each do |album|
+    @array_added2020 << album if album.ranking2012.nil? && !album.ranking2020.nil?
+  end
+end
+
+def reentries
+  @array_reenter = []
+  @albums_array.each do |album|
+    @array_reenter << album if !album.ranking2003.nil? && album.ranking2012.nil? && !album.ranking2020.nil?
+  end
+end
+
+# analyse_lists
+load_csv
+# p @albums_array
+reentries
+csv_file_path = './albums_reentries.csv'
+save_to_csv(csv_file_path, @array_reenter)
+
 # parse_genius2020
 # @albums_array = []
 # parse_genius2003
