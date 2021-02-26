@@ -12,17 +12,35 @@ def analyse_lists
   p @albums_array.size
   format_albums_array
   # p @albums_array
-  p Benchmark.measure { parse_genius2012 }
+  parse_genius2012
   p @albums_array.size
   format_albums_array
   # p elapsed2012
   # parse_genius2012
-  p Benchmark.measure { parse_genius2020 }
+  parse_genius2020
+  elvis_sun_sessions
+  p @elvis_albums
   calculate_average
   sort_albums
   save_to_csv
   # p @albums_array
   p @albums_array.size
+end
+
+def test_lists
+  @albums_array = []
+  parse_genius2003
+  format_albums_array
+  p @albums_array.size
+  p @formatted_albums_array.size
+  p @albums_array[9]
+  p @formatted_albums_array[9]
+  parse_genius2012
+  format_albums_array
+  p @albums_array.size
+  p @formatted_albums_array.size
+  p @albums_array[9]
+  p @formatted_albums_array[9]
 end
 
 def parse_genius2003
@@ -41,8 +59,8 @@ end
 def format_albums_array
   @formatted_albums_array = []
   @albums_array.each do |album|
-    album_artist_formatted = ActiveSupport::Inflector.transliterate(album.artist.downcase.gsub(/&/, 'and').gsub(/The/, '').gsub(/[^\p{Letter}]+/, ''))
-    album_title_formatted = ActiveSupport::Inflector.transliterate(album.title.downcase.gsub(/&/, 'and').gsub(/The/, '').gsub(/[^\p{Letter}]+/, ''))
+    album_artist_formatted = ActiveSupport::Inflector.transliterate(album.artist.downcase.gsub(/&/, 'and').gsub(/the/, '').gsub(/[^\p{Letter}]+/, ''))
+    album_title_formatted = ActiveSupport::Inflector.transliterate(album.title.downcase.gsub(/&/, 'and').gsub(/the/, '').gsub(/[^\p{Letter}]+/, ''))
     @formatted_albums_array << [album_artist_formatted, album_title_formatted]
   end
   @formatted_albums_array
@@ -58,8 +76,8 @@ def parse_genius2012
     title = match[1]
     artist = match[3]
     year = match[2]
-    artist_formatted = ActiveSupport::Inflector.transliterate(artist.downcase.gsub(/&/, 'and').gsub(/The/, '').gsub(/[^\p{Letter}]+/, ''))
-    title_formatted = ActiveSupport::Inflector.transliterate(title.downcase.gsub(/&/, 'and').gsub(/The/, '').gsub(/[^\p{Letter}]+/, ''))
+    artist_formatted = formatter(artist)
+    title_formatted = formatter(title)
     contained = false
     # iterate over @albums_array and check if title and artist already exist
     # if the album exists update the 2012 rank
@@ -78,8 +96,7 @@ def parse_genius2012
 end
 
 def parse_genius2020
-  url = '2020.html'
-  doc = Nokogiri::HTML(open(url), nil, 'utf-8')
+  doc = Nokogiri::HTML(open('2020.html'), nil, 'utf-8')
   list_string = doc.search('.lyrics').text.strip
   rank = 1
   list_string.each_line do |line|
@@ -87,8 +104,8 @@ def parse_genius2020
     artist = match[1].strip
     title = match[2].strip
     year = match[3]
-    artist_formatted = ActiveSupport::Inflector.transliterate(artist.downcase.gsub(/&/, 'and').gsub(/The/, '').gsub(/[^\p{Letter}]+/, ''))
-    title_formatted = ActiveSupport::Inflector.transliterate(title.downcase.gsub(/&/, 'and').gsub(/The/, '').gsub(/[^\p{Letter}]+/, ''))
+    artist_formatted = formatter(artist)
+    title_formatted = formatter(title)
     contained = false
     @formatted_albums_array.each_with_index do |album, index|
       title_match = album[1].include?(title_formatted) || title_formatted.include?(album[1])
@@ -103,12 +120,32 @@ def parse_genius2020
   end
 end
 
+def formatter(artist_or_title)
+  artist_or_title = artist_or_title.downcase.gsub(/&/, 'and').gsub(/the/, '').gsub(/[^\p{Letter}]+/, '')
+  ActiveSupport::Inflector.transliterate(artist_or_title)
+end
+
 def calculate_average
   @albums_array.each do |album|
     album_array = [album.ranking2003, album.ranking2012, album.ranking2020]
     album_array.compact!
     album.ranking_avg = (album_array.sum / album_array.size.to_f).round(2)
   end
+end
+
+def elvis_sun_sessions
+  @elvis_albums = []
+  @albums_array.each_with_index do |album, index|
+    @elvis_albums << [index, album] if album.title.downcase.include?('sun') && album.artist == 'Elvis Presley'
+  end
+  elvis_rankings
+  @albums_array.delete_at(@elvis_albums[1][0])
+end
+
+def elvis_rankings
+  @elvis_albums[0][1].ranking2003 = @elvis_albums[1][1].ranking2003 if @elvis_albums[0][1].ranking2003.nil?
+  @elvis_albums[0][1].ranking2012 = @elvis_albums[1][1].ranking2012 if @elvis_albums[0][1].ranking2012.nil?
+  @elvis_albums[0][1].ranking2020 = @elvis_albums[1][1].ranking2020 if @elvis_albums[0][1].ranking2020.nil?
 end
 
 def sort_albums
