@@ -122,6 +122,7 @@ def parse_genius2020
 end
 
 def formatter(artist_or_title)
+  # (?<!l)(?<!\.)[^\p{Letter}]+ regex for orting out Vol.x?
   artist_or_title = artist_or_title.downcase.gsub(/&/, 'and').gsub(/the/, '').gsub(/[^\p{Letter}]+/, '')
   ActiveSupport::Inflector.transliterate(artist_or_title)
 end
@@ -212,8 +213,8 @@ def reentries
   end
 end
 
-# analyse_lists
-load_csv
+analyse_lists
+# load_csv
 # p @albums_array
 reentries
 csv_file_path = './albums_reentries.csv'
