@@ -12,8 +12,8 @@ end
 def compare_arrays
   array1 = []
   array2 = []
-  load_csv('albums_list.csv', array1)
-  load_csv('albums_list_1.csv', array2)
+  load_csv('albums_list_202104141943.csv', array1)
+  load_csv('albums_list_202104141944.csv', array2)
   # p array1[522]
   # p array2[0]
   unique_array = unique_albums(array1, array2)

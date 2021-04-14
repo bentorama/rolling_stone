@@ -3,8 +3,19 @@ require 'open-uri'
 require 'csv'
 require 'active_support/inflector'
 require 'benchmark'
+require 'humanize'
 
 require_relative 'album'
+
+def humanize_test(album)
+  album = album.downcase.gsub(/&/, 'and').gsub(/the/, '')
+  p digits = album.scan(/(\d+)/).flatten
+  digits.each do |digit|
+    album = album.gsub(digit, digit.to_i.humanize)
+  end
+  album.gsub(/[^\p{Letter}]+/, '')
+  # album.downcase.gsub(/&/, 'and').gsub(/the/, '').gsub(/[^\p{Letter}]+/, '')
+end
 
 def analyse_lists
   @albums_array = []
@@ -19,10 +30,12 @@ def analyse_lists
   # parse_genius2012
   parse_genius2020
   elvis_sun_sessions
-  p @elvis_albums
+  king_of_the_delta_blues_singers
+  # @elvis_albums
   calculate_average
   sort_albums
-  csv_file_path = './albums_list.csv'
+  time = Time.new.strftime("%Y%m%d%H%M")
+  csv_file_path = "./albums_list_#{time}.csv"
   save_to_csv(csv_file_path, @albums_array)
   # p @albums_array
   p @albums_array.size
@@ -60,8 +73,8 @@ end
 def format_albums_array
   @formatted_albums_array = []
   @albums_array.each do |album|
-    album_artist_formatted = ActiveSupport::Inflector.transliterate(album.artist.downcase.gsub(/&/, 'and').gsub(/the/, '').gsub(/[^\p{Letter}]+/, ''))
-    album_title_formatted = ActiveSupport::Inflector.transliterate(album.title.downcase.gsub(/&/, 'and').gsub(/the/, '').gsub(/[^\p{Letter}]+/, ''))
+    album_artist_formatted = formatter(album.artist)
+    album_title_formatted = formatter(album.title)
     @formatted_albums_array << [album_artist_formatted, album_title_formatted]
   end
   @formatted_albums_array
@@ -122,6 +135,12 @@ def parse_genius2020
 end
 
 def formatter(artist_or_title)
+  # artist_or_title = artist_or_title.downcase.gsub(/&/, 'and').gsub(/the/, '')
+  # digits = artist_or_title.scan(/(\d+)/).flatten
+  # digits.each do |digit|
+  #   artist_or_title = artist_or_title.gsub(digit, digit.to_i.humanize)
+  # end
+  # artist_or_title = artist_or_title.gsub(/[^\p{Letter}]+/, '')
   # (?<!l)(?<!\.)[^\p{Letter}]+ regex for orting out Vol.x?
   artist_or_title = artist_or_title.downcase.gsub(/&/, 'and').gsub(/the/, '').gsub(/[^\p{Letter}]+/, '')
   ActiveSupport::Inflector.transliterate(artist_or_title)
@@ -150,6 +169,12 @@ def elvis_rankings
   @elvis_albums[0][1].ranking2020 = @elvis_albums[1][1].ranking2020 if @elvis_albums[0][1].ranking2020.nil?
 end
 
+def king_of_the_delta_blues_singers
+  @albums_array.each do |album|
+    album.ranking2020 = nil if album.title == "King Of The Delta Blues Singers, Vol. 2"
+  end
+end
+
 def sort_albums
   @albums_array.sort_by!(&:ranking_avg)
 end
@@ -166,7 +191,7 @@ end
 def load_csv
   @albums_array = []
   csv_options = {headers: :first_row, header_converters: :symbol}
-  CSV.foreach('albums_list.csv', csv_options) do |row|
+  CSV.foreach('albums_list_202104142226.csv', csv_options) do |row|
     row[:title] = row[:title]
     row[:artist] = row[:artist]
     row[:year] = row[:year].to_i
@@ -213,12 +238,13 @@ def reentries
   end
 end
 
-analyse_lists
-# load_csv
-# p @albums_array
-reentries
-csv_file_path = './albums_reentries.csv'
-save_to_csv(csv_file_path, @array_reenter)
+# analyse_lists
+load_csv
+# # p @albums_array
+albums_cut2012
+time = Time.new.strftime('%Y%m%d%H%M')
+csv_file_path = "./albums_cut_2012_#{time}.csv"
+save_to_csv(csv_file_path, @array_cut2012)
 
 # parse_genius2020
 # @albums_array = []
