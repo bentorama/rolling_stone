@@ -238,13 +238,21 @@ def reentries
   end
 end
 
+def albums2020
+  @array2020 = []
+  @albums_array.each do |album|
+    @array2020 << album unless album.ranking2020.nil?
+  end
+  @array2020.sort_by!(&:ranking2020)
+end
+
 # analyse_lists
 load_csv
 # # p @albums_array
-albums_cut2012
+albums2020
 time = Time.new.strftime('%Y%m%d%H%M')
-csv_file_path = "./albums_cut_2012_#{time}.csv"
-save_to_csv(csv_file_path, @array_cut2012)
+csv_file_path = "./albums2020_#{time}.csv"
+save_to_csv(csv_file_path, @array2020)
 
 # parse_genius2020
 # @albums_array = []
