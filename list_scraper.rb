@@ -3,29 +3,33 @@ require 'open-uri'
 require 'csv'
 require 'active_support/inflector'
 require 'benchmark'
-require 'humanize'
+# require 'humanize'
 
 require_relative 'album'
 
-def humanize_test(album)
-  album = album.downcase.gsub(/&/, 'and').gsub(/the/, '')
-  p digits = album.scan(/(\d+)/).flatten
-  digits.each do |digit|
-    album = album.gsub(digit, digit.to_i.humanize)
-  end
-  album.gsub(/[^\p{Letter}]+/, '')
-  # album.downcase.gsub(/&/, 'and').gsub(/the/, '').gsub(/[^\p{Letter}]+/, '')
-end
+# def humanize_test(album)
+#   album = album.downcase.gsub(/&/, 'and').gsub(/the/, '')
+#   p digits = album.scan(/(\d+)/).flatten
+#   digits.each do |digit|
+#     album = album.gsub(digit, digit.to_i.humanize)
+#   end
+#   album.gsub(/[^\p{Letter}]+/, '')
+#   # album.downcase.gsub(/&/, 'and').gsub(/the/, '').gsub(/[^\p{Letter}]+/, '')
+# end
 
 def analyse_lists
   @albums_array = []
   parse_genius2003
+  # @albums_array.each { |album| puts album.artist }
   p @albums_array.size
+  # @albums_array.each { |album| puts album.artist }
   format_albums_array
   # p @albums_array
   parse_genius2012
   p @albums_array.size
+  p @new_albums_2012
   format_albums_array
+  p @formatted_albums_array[162]
   # p elapsed2012
   # parse_genius2012
   parse_genius2020
@@ -62,12 +66,18 @@ def parse_genius2003
   list_string = doc.search('.lyrics').text.strip
   rank = 1
   list_string.each_line do |line|
+    # puts line
     title = line.match(/\s(.+)\s\((\d{4})\)\sby\s(.+)/)[1].gsub(/"/, '')
     artist = line.match(/\s(.+)\s\((\d{4})\)\sby\s(.+)/)[3]
+    artist = wailers(artist)
     year = line.match(/\s(.+)\s\((\d{4})\)\sby\s(.+)/)[2]
     @albums_array << Album.new(title: title, artist: artist, year: year, ranking2003: rank)
     rank += 1
   end
+end
+
+def wailers(artist)
+  artist.downcase.include?('marley') || artist.downcase.include?('wailer') ? 'Bob Marley and the Wailers' : artist
 end
 
 def format_albums_array
@@ -85,26 +95,38 @@ def parse_genius2012
   # list_string = doc.search('.lyrics').text.strip
   list_string = doc.search('.lyrics').text.strip.gsub!(/\n\n/, "\n")
   rank = 1
+  @new_albums_2012 = []
   list_string.each_line do |line|
+    # puts line
     match = line.match(/\.\s?(.+)\s\((\d{4})\)\sby\s(.+)/)
     title = match[1]
     artist = match[3]
+    # puts artist
     year = match[2]
-    artist_formatted = formatter(artist)
+    artist_formatted = formatter(wailers(artist))
     title_formatted = formatter(title)
     contained = false
     # iterate over @albums_array and check if title and artist already exist
     # if the album exists update the 2012 rank
     # if the album doesn't exist create a new instance of Album and push to the array
     @formatted_albums_array.each_with_index do |album, index|
-      title_match = album[1].include?(title_formatted) || title_formatted.include?(album[1])
-      album_match = album[0].include?(artist_formatted) || artist_formatted.include?(album[0])
+      if album[1].include?('zeppelin')
+        title_match = album[1] == title_formatted
+      else
+        title_match = album[1].include?(title_formatted) || title_formatted.include?(album[1])
+      end
+      # album_match = album[0].include?(artist_formatted) || artist_formatted.include?(album[0])
+      album_match = album[0] == artist_formatted
       if title_match && album_match
         @albums_array[index].ranking2012 = rank
         contained = true
       end
     end
-    @albums_array << Album.new(title: title, artist: artist, year: year, ranking2012: rank) if contained == false
+    if contained == false
+      album = Album.new(title: title, artist: artist, year: year, ranking2012: rank)
+      @albums_array << album
+      @new_albums_2012 << album
+    end
     rank += 1
   end
 end
@@ -118,12 +140,18 @@ def parse_genius2020
     artist = match[1].strip
     title = match[2].strip
     year = match[3]
-    artist_formatted = formatter(artist)
+    artist_formatted = formatter(wailers(artist))
     title_formatted = formatter(title)
     contained = false
     @formatted_albums_array.each_with_index do |album, index|
-      title_match = album[1].include?(title_formatted) || title_formatted.include?(album[1])
-      album_match = album[0].include?(artist_formatted) || artist_formatted.include?(album[0])
+      if album[1].include?('zeppelin') || album[1].include?('carter')
+        title_match = album[1] == title_formatted
+      else
+        title_match = album[1].include?(title_formatted) || title_formatted.include?(album[1])
+      end
+      # title_match = album[1].include?(title_formatted) || title_formatted.include?(album[1])
+      # album_match = album[0].include?(artist_formatted) || artist_formatted.include?(album[0])
+      album_match = album[0] == artist_formatted
       if title_match && album_match
         @albums_array[index].ranking2020 = rank
         contained = true
@@ -142,7 +170,9 @@ def formatter(artist_or_title)
   # end
   # artist_or_title = artist_or_title.gsub(/[^\p{Letter}]+/, '')
   # (?<!l)(?<!\.)[^\p{Letter}]+ regex for orting out Vol.x?
-  artist_or_title = artist_or_title.downcase.gsub(/&/, 'and').gsub(/the/, '').gsub(/[^\p{Letter}]+/, '')
+  if artist_or_title.match(/\d{4,}/) == nil
+    artist_or_title = artist_or_title.downcase.gsub(/&/, 'and').gsub(/the/, '').gsub(/[^\p{Letter}]+/, '')
+  end
   ActiveSupport::Inflector.transliterate(artist_or_title)
 end
 
@@ -191,14 +221,14 @@ end
 def load_csv
   @albums_array = []
   csv_options = {headers: :first_row, header_converters: :symbol}
-  CSV.foreach('albums_list_202104142226.csv', csv_options) do |row|
+  CSV.foreach('albums_list_202105242151.csv', csv_options) do |row|
     row[:title] = row[:title]
     row[:artist] = row[:artist]
     row[:year] = row[:year].to_i
     row[:ranking2003] = row[:ranking2003].nil? ? nil : row[:ranking2003].to_i
     row[:ranking2012] = row[:ranking2012].nil? ? nil : row[:ranking2012].to_i
     row[:ranking2020] = row[:ranking2020].nil? ? nil : row[:ranking2020].to_i
-    row[:ranking_avg] = row[:ranking_avg].to_i
+    row[:ranking_avg] = row[:ranking_avg].to_f
     @albums_array << Album.new(row)
   end
 end
@@ -246,15 +276,41 @@ def albums2020
   @array2020.sort_by!(&:ranking2020)
 end
 
+def create_csvs
+  load_csv
+  time = Time.new.strftime('%Y%m%d%H%M')
+  albums_cut2012
+  csv_file_path = "./albums_cut_2012_#{time}.csv"
+  save_to_csv(csv_file_path, @array_cut2012)
+  albums_added2012
+  csv_file_path = "./albums_add_2012_#{time}.csv"
+  save_to_csv(csv_file_path, @array_add2012)
+  albums_cut2020
+  csv_file_path = "./albums_cut_2020_#{time}.csv"
+  save_to_csv(csv_file_path, @array_cut2020)
+  albums_added2020
+  csv_file_path = "./albums_add_2020_#{time}.csv"
+  save_to_csv(csv_file_path, @array_added2020)
+  reentries
+  csv_file_path = "./albums_reentries_#{time}.csv"
+  save_to_csv(csv_file_path, @array_reenter)
+  albums2020
+  csv_file_path = "./albums2020_#{time}.csv"
+  save_to_csv(csv_file_path, @array2020)
+end
+
 # analyse_lists
-load_csv
+create_csvs
+# load_csv
 # # p @albums_array
-albums2020
-time = Time.new.strftime('%Y%m%d%H%M')
-csv_file_path = "./albums2020_#{time}.csv"
-save_to_csv(csv_file_path, @array2020)
+# albums2020
+# time = Time.new.strftime('%Y%m%d%H%M')
+# csv_file_path = "./albums_list_#{time}.csv"
+# save_to_csv(csv_file_path, @array2020)
 
 # parse_genius2020
 # @albums_array = []
 # parse_genius2003
+# format_albums_array
+# parse_genius2012
 # p format_albums_array
